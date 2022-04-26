@@ -24,10 +24,12 @@ public class StreamWordCount {
 //        DataStream<String> dataStream = environment.readTextFile(inputFilePath);
 
         // 从 socket 读取数据
-        DataStream<String> dataStream = environment.socketTextStream("10.91.3.37", 7777);
-        DataStream<Tuple2<String, Integer>> outputStream = dataStream.flatMap(new WordCountFlatMapper()).keyBy(item -> item.f0).sum(1);
-        outputStream.print();
-        environment.execute();
+        DataStream<String> dataStream = environment.socketTextStream("localhost", 7777);
+        DataStream<Tuple2<String, Integer>> outputStream = dataStream.flatMap(new WordCountFlatMapper()).setParallelism(2)
+                .keyBy(item -> item.f0).sum(1).setParallelism(2);
+        outputStream.print("StreamWordCount");
+
+        environment.execute("StreamWordCount");
 
     }
 }
