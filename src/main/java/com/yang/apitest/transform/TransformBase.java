@@ -5,11 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author zhangyang03
@@ -18,13 +16,7 @@ import java.util.Properties;
  */
 public class TransformBase {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(1);
-        // 从文件中读取数据
-        Properties prop = new Properties();
-        prop.put("inputFilePath","E:\\project_java\\FlinkLearning\\src\\main\\resources\\topic001.txt");
-        String inputFilePath = prop.getProperty("inputFilePath");
-        DataStream<String> dataStream = env.readTextFile(inputFilePath);
+        DataStream<String> dataStream = TransformPublic.getDataStreamFroText();
 
         // 1. map 计算json字符串的个数
         DataStream<Integer> mapDateStream = dataStream.map(s -> JSON.parseObject(s).size());
@@ -52,6 +44,6 @@ public class TransformBase {
         mapDateStream.print("mapDateStream");
         flatMapDateStream.print("flatMapDateStream");
         filterDataStream.print("filter--DataStream");
-        env.execute("TransformBase");
+        TransformPublic.execute("TransformBase");
     }
 }
