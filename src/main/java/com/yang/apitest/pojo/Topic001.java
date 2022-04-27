@@ -1,5 +1,6 @@
 package com.yang.apitest.pojo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -49,7 +50,7 @@ public class Topic001 {
     public String toString() {
         return "Topic001{" +
                 "id=" + id +
-                ", time=" + time +
+                ", time=" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS").format(time) +
                 ", num=" + num +
                 '}';
     }
