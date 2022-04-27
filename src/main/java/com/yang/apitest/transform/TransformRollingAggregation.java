@@ -1,13 +1,10 @@
 package com.yang.apitest.transform;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.yang.apitest.pojo.Topic001;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 
-import java.text.SimpleDateFormat;
 
 /**
  * @author zhangyang03
@@ -17,12 +14,7 @@ import java.text.SimpleDateFormat;
 public class TransformRollingAggregation {
 
     public static void main(String[] args) throws Exception {
-        DataStream<String> dataStream = TransformPublic.getDataStreamFroText();
-
-        DataStream<Topic001> mapDataStream = dataStream.map(s -> {
-            JSONObject jsonObject = JSON.parseObject(s);
-            return new Topic001(Integer.valueOf(jsonObject.get("id").toString()), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObject.get("time").toString()), Integer.valueOf(jsonObject.get("num").toString()));
-        });
+        DataStream<Topic001> mapDataStream = TransformPublic.getTopoc001DataStream();
         // 先分组再聚合
         KeyedStream<Topic001, Integer> keyedDataStream = mapDataStream.keyBy(new KeySelector<Topic001, Integer>() {
             @Override
