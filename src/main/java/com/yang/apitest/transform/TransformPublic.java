@@ -21,9 +21,9 @@ public class TransformPublic {
     private TransformPublic() {
     }
 
-    public static DataStream<String> getDataStreamFroText() {
+    public static DataStream<String> getDataStreamFromText() {
         env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(1);
+        env.setParallelism(4);
         // 从文件中读取数据
         Properties prop = new Properties();
         prop.put("inputFilePath", "E:\\project_java\\FlinkLearning\\src\\main\\resources\\topic001.txt");
@@ -32,7 +32,7 @@ public class TransformPublic {
     }
 
     public static DataStream<Topic001> getTopoc001DataStream(){
-        DataStream<String> dataStream = TransformPublic.getDataStreamFroText();
+        DataStream<String> dataStream = TransformPublic.getDataStreamFromText();
         return dataStream.filter(JsonUtil::isJson).map(s -> {
             JSONObject jsonObject = JSON.parseObject(s);
             return new Topic001(Integer.valueOf(jsonObject.get("id").toString()), new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS").parse(jsonObject.get("time").toString()), Integer.valueOf(jsonObject.get("num").toString()));

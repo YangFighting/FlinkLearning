@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class TransformBase {
     public static void main(String[] args) throws Exception {
-        DataStream<String> dataStream = TransformPublic.getDataStreamFroText();
+        DataStream<String> dataStream = TransformPublic.getDataStreamFromText();
 
         // 1. map 计算json字符串的个数
         DataStream<Integer> mapDateStream = dataStream.map(s -> JSON.parseObject(s).size());
