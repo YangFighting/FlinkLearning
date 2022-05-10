@@ -1,6 +1,7 @@
 package com.yang.apitest.transform;
 
 import com.yang.apitest.pojo.Topic001;
+import com.yang.utils.InputDataStreamUtil;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -12,7 +13,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
  */
 public class TransformReduce {
     public static void main(String[] args) throws Exception {
-        DataStream<Topic001> mapDataStream = TransformPublic.getTopoc001DataStream();
+        DataStream<Topic001> mapDataStream = InputDataStreamUtil.getTopoc001DataStream();
 
         DataStream<Topic001> reduceDataStream = mapDataStream.keyBy(Topic001::getId).reduce(new ReduceFunction<Topic001>() {
             @Override
@@ -24,6 +25,6 @@ public class TransformReduce {
         });
         reduceDataStream.print("reduceDataStream");
 
-        TransformPublic.execute("TransformReduce");
+        InputDataStreamUtil.execute("TransformReduce");
     }
 }

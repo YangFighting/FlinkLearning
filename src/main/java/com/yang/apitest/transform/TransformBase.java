@@ -2,6 +2,7 @@ package com.yang.apitest.transform;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yang.utils.InputDataStreamUtil;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class TransformBase {
     public static void main(String[] args) throws Exception {
-        DataStream<String> dataStream = TransformPublic.getDataStreamFromText();
+        DataStream<String> dataStream = InputDataStreamUtil.getDataStreamFromText();
 
         // 1. map 计算json字符串的个数
         DataStream<Integer> mapDateStream = dataStream.map(s -> JSON.parseObject(s).size());
@@ -44,6 +45,6 @@ public class TransformBase {
         mapDateStream.print("mapDateStream");
         flatMapDateStream.print("flatMapDateStream");
         filterDataStream.print("filter--DataStream");
-        TransformPublic.execute("TransformBase");
+        InputDataStreamUtil.execute("TransformBase");
     }
 }

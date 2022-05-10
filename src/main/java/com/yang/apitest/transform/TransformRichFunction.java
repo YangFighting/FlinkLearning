@@ -1,6 +1,7 @@
 package com.yang.apitest.transform;
 
 import com.yang.apitest.pojo.Topic001;
+import com.yang.utils.InputDataStreamUtil;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
@@ -18,10 +19,10 @@ public class TransformRichFunction {
     private static final Logger logger = LoggerFactory.getLogger(TransformRichFunction.class);
 
     public static void main(String[] args) throws Exception {
-        DataStream<Topic001> dataStream = TransformPublic.getTopoc001DataStream();
+        DataStream<Topic001> dataStream = InputDataStreamUtil.getTopoc001DataStream();
         DataStream<Tuple2<String, Integer>> resultStream = dataStream.map(new MyMapper());
         resultStream.print();
-        TransformPublic.execute("TransformRichFunction");
+        InputDataStreamUtil.execute("TransformRichFunction");
     }
 
     // 实现自定义富函数类（RichMapFunction是一个抽象类）

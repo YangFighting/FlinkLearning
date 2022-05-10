@@ -1,6 +1,7 @@
 package com.yang.apitest.transform;
 
 import com.yang.apitest.pojo.Topic001;
+import com.yang.utils.InputDataStreamUtil;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.ConnectedStreams;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,7 +17,7 @@ import scala.Tuple3;
 public class TransformMultipleStreams {
 
     public static void main(String[] args) throws Exception {
-        DataStream<Topic001> dataStream = TransformPublic.getTopoc001DataStream();
+        DataStream<Topic001> dataStream = InputDataStreamUtil.getTopoc001DataStream();
 
         // 1. 根据 filter 分流，按照num 为 50 为界分为两条流
         DataStream<Topic001> highNumDataStream = dataStream.filter(topic001 -> (topic001.getNum() >= 50));
@@ -52,7 +53,7 @@ public class TransformMultipleStreams {
         DataStream<Topic001> unionDataStream = highNumDataStream.union(lowNumDataStream, dataStream);
         unionDataStream.print("unionDataStream");
 
-        TransformPublic.execute("TransformMultipleStreams");
+        InputDataStreamUtil.execute("TransformMultipleStreams");
     }
 
 

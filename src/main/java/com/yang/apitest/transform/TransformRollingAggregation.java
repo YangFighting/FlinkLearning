@@ -1,6 +1,7 @@
 package com.yang.apitest.transform;
 
 import com.yang.apitest.pojo.Topic001;
+import com.yang.utils.InputDataStreamUtil;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
@@ -14,7 +15,7 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 public class TransformRollingAggregation {
 
     public static void main(String[] args) throws Exception {
-        DataStream<Topic001> mapDataStream = TransformPublic.getTopoc001DataStream();
+        DataStream<Topic001> mapDataStream = InputDataStreamUtil.getTopoc001DataStream();
         // 先分组再聚合
         KeyedStream<Topic001, Integer> keyedDataStream = mapDataStream.keyBy(new KeySelector<Topic001, Integer>() {
             @Override
@@ -25,6 +26,6 @@ public class TransformRollingAggregation {
         // 在keyBy中，flink支持的需要是POJO类，或者tuple、样例类
         DataStream<Topic001> maxByStream = keyedDataStream.maxBy("num");
         maxByStream.print("maxByStream");
-        TransformPublic.execute("TransformRollingAggregation");
+        InputDataStreamUtil.execute("TransformRollingAggregation");
     }
 }
