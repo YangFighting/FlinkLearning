@@ -36,7 +36,7 @@ public class SinkRedis {
 
         @Override
         public RedisCommandDescription getCommandDescription() {
-            return new RedisCommandDescription(RedisCommand.HSET, "Topic001_num");
+            return new RedisCommandDescription(RedisCommand.HSET, "topic001_num");
         }
 
         @Override
