@@ -38,6 +38,29 @@ public class InputDataStreamUtil {
         return env.readTextFile(inputFilePath);
     }
 
+    /**
+     *    从socket文本流获取数据
+     * @return String 流
+     */
+    public static DataStream<String> getDataStreamFromSocket(String hostname, int port) {
+        env = getEnv();
+        env.setParallelism(1);
+        return env.socketTextStream(hostname, port);
+    }
+
+    /**
+     *  根据 String 流 转换成 Topic001 流
+     * @param stringDataStream  String 流
+     * @return Topic001 流
+     */
+    public static DataStream<Topic001> getTopoc001FromStringDataStream(DataStream<String> stringDataStream) {
+        return stringDataStream.filter(JsonUtil::isJson).map(s -> {
+            JSONObject jsonObject = JSON.parseObject(s);
+            return new Topic001(Integer.valueOf(jsonObject.get("id").toString()), new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS").parse(jsonObject.get("time").toString()), Integer.valueOf(jsonObject.get("num").toString()));
+        });
+
+    }
+
     public static DataStream<Topic001> getTopoc001DataStream() {
         DataStream<String> dataStream = getDataStreamFromText();
         return dataStream.filter(JsonUtil::isJson).map(s -> {
