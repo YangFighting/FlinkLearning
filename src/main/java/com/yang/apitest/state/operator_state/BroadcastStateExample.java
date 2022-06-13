@@ -49,7 +49,7 @@ public class BroadcastStateExample {
         matches.print();
         env.execute();
     }
-    // KS：
+    // KS：广播状态MapStateDescriptor 的key类型，因为MapStateDescriptor 只能为String, 所以这里也必须是String
     // IN1：输入流
     // N2：输入广播流
     // OUT: 输出流
